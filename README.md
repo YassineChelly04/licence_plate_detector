@@ -1,5 +1,3 @@
----
-
 ### **README.md**
 
 # 🚗 Car Plate Detection System  
