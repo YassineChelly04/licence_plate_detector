@@ -12,11 +12,12 @@ from streamlit_webrtc import webrtc_streamer
 import av
 
 # Set background and load paths
-set_background("C:/Users/yassi/OneDrive/Desktop/project/imgs/background.png")
+set_background(os.path.join(BASE_DIR, "imgs", "background.png"))
 
-folder_path = "C:/Users/yassi/OneDrive/Desktop/project"
-LICENSE_MODEL_DETECTION_DIR = r'C:\Users\yassi\OneDrive\Desktop\project\models/mymodel11.pt'
-COCO_MODEL_DIR = r"C:\Users\yassi\OneDrive\Desktop\project\models/yolo11n.pt"
+folder_path = BASE_DIR
+LICENSE_MODEL_DETECTION_DIR = os.path.join(BASE_DIR, "models", "mymodel11.pt")
+COCO_MODEL_DIR = os.path.join(BASE_DIR, "models", "yolo11n.pt")
+
 
 # Initialize EasyOCR reader
 reader = easyocr.Reader(['en'], gpu=False)
@@ -154,7 +155,7 @@ def process_frame(img):
                 } 
                 license_numbers += 1
           
-        write_csv(results, f"C:/Users/yassi/OneDrive/Desktop/project/csv_detections/detections.csv")
+        write_csv(results, os.path.join(BASE_DIR, "csv_detections", "detections.csv"))
 
         img_wth_box = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     
@@ -226,7 +227,7 @@ with header:
     col4.subheader("Computer Vision Detection with YOLOv11n 🧪")
 
     _, col, _ = st.columns([0.3,1,0.1])
-    col.image("C:/Users/yassi/OneDrive/Desktop/project/imgs/plate_test.jpg")
+    col.image(os.path.join(BASE_DIR, "imgs", "plate_test.jpg"))
 
     st.write("The different models detect the car and the license plate in a given image or video, then extract the info about the license using EasyOCR, and crop and save the license plate as an Image, with a CSV file with all the data.")
 
@@ -292,7 +293,7 @@ with body:
                             col11.success(f"License Number {i+1}: {texts[i]}")
 
                     # Read and display CSV
-                    df = pd.read_csv(f"C:/Users/yassi/OneDrive/Desktop/project/csv_detections/detections.csv")
+                    df = pd.read_csv(os.path.join(BASE_DIR, "csv_detections", "detections.csv"))
                     st.dataframe(df)
 
                     # Clean up temporary video file
@@ -327,7 +328,7 @@ with body:
                         _, col11, _ = st.columns([0.45,1,0.55])
                         col11.success(f"License Number: {texts[0]}")
 
-                        df = pd.read_csv(f"C:/Users/yassi/OneDrive/Desktop/project/csv_detections/detections.csv")
+                        df = pd.read_csv(os.path.join(BASE_DIR, "csv_detections", "detections.csv"))
                         st.dataframe(df)
                     elif len(texts) > 1 and len(license_plate_crop) > 1:
                         _, col3, _ = st.columns([0.4,1,0.2])
@@ -346,5 +347,5 @@ with body:
                             col10.image(license_plate_crop[i], width=350)
                             col11.success(f"License Number {i+1}: {texts[i]}")
 
-                        df = pd.read_csv(f"C:/Users/yassi/OneDrive/Desktop/project/csv_detections/detections.csv")
+                        df = pd.read_csv(os.path.join(BASE_DIR, "csv_detections", "detections.csv"))
                         st.dataframe(df)
